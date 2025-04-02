@@ -1,0 +1,27 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "backend for devtinder",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mightyanubhav/devtinder2.git"
+  },
+  "keywords": [
+    "nodeJs",
+    "express.js"
+  ],
+  "author": "Anubhav Shukla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mightyanubhav/devtinder2/issues"
+  },
+  "homepage": "https://github.com/mightyanubhav/devtinder2#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

@@ -7,6 +7,9 @@ const { connect } = require('./src/database/db_connect')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
 app.use('/', router)
 
 

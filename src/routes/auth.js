@@ -42,15 +42,12 @@ router.post('/login', async(req, res) =>{
 
         const token = jwt.sign({userId: user._id}, "Secret_Key", {expiresIn: '1d'})
         res.cookie("token", token).json({ message: "Login successful", token });
-
-        // response with login successful .
-        res.send("login successful")
     }catch(e){
-        res.status(400).json({message:e.message} )
+        return res.status(400).send(e.message)
     }
 })
 router.post('/logout', (req, res) => {
-    res.cookie("token", "", { expires: new Date(0), httpOnly: true }).json({ message: "Logout successful" });
+    res.cookie("token", "", { expires: new Date(0)}).json({ message: "Logout successful" });
 });
 
 module.exports = router;

@@ -3,17 +3,17 @@ const app = express()
 const PORT = 7777;
 const router = require('./src/routes/auth')
 const profileRouter = require('./src/routes/profile')
-const { connect } = require('./src/database/db_connect')
+const requestRouter = require('./src/routes/request')
 
+const { connect } = require('./src/database/db_connect')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
-
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
 app.use(cookieParser())
 
 app.use('/', router)
 app.use('/profile', profileRouter)
-
+app.use('/request', requestRouter)
 
 
 async function main(){

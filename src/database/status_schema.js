@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 function validator(v){
-    return ['interested', 'rejected', 'ignored', 'match'].includes(v)
+    return ['interested', 'rejected', 'ignored', 'accepted'].includes(v)
 }
 const status_schema = new mongoose.Schema({
     sender: {

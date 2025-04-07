@@ -58,7 +58,7 @@ requestRouter.post('/review/:status/:userId', authenticate, async(req, res)=>{
         }
         // ✅ Validate ObjectId format
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            throw new Error("Invalid user ID format");
+            throw new Error("Invalid user ID format please update");
         }
 
         // ✅ Check if the target user exists
@@ -82,8 +82,6 @@ requestRouter.post('/review/:status/:userId', authenticate, async(req, res)=>{
     }catch(e){
         res.status(400).json({message: e.message})
     }
-
-
 
 })
 

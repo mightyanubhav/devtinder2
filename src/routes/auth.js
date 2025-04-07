@@ -25,27 +25,35 @@ router.post('/signup', async(req, res)=>{
     res.send("signup request completed")
 })
 
-router.post('/login', async(req, res) =>{
-    try{
-        // first authenticate user
-        // check for email & check the password 
-        const {email, password} = req.body
-        const user = await User.findOne({email})
-        if(!user){
-            throw new Error("invalid credentials")
-        }
-        const match = await bcrypt.compare(password, user.password);
-        if(!match){
-            throw new Error("invalid credentials")
-        }
-        // send jwt token cookie
+router.post('/login', async (req, res) => {
+    try {
+        const { emailId, password } = req.body;
 
-        const token = jwt.sign({userId: user._id}, "Secret_Key", {expiresIn: '1d'})
-        res.cookie("token", token).json({ message: "Login successful", token });
-    }catch(e){
-        return res.status(400).send(e.message)
+        const user = await User.findOne({ emailId });
+        console.log(user)
+        if (!user || !user.password) {
+            throw new Error("Invalid credentials");
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            throw new Error("Invalid credentials");
+        }
+
+        const token = jwt.sign({ userId: user._id }, 'secret-key', {
+            expiresIn: '1d'
+        });
+
+        res.status(200).cookie("token", token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+        }).json({ message: "Login successful", token });
+
+    } catch (e) {
+        res.status(400).send(e.message);
     }
-})
+});
+
 router.post('/logout', (req, res) => {
     res.cookie("token", "", { expires: new Date(0)}).json({ message: "Logout successful" });
 });

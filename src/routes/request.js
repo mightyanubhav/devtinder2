@@ -67,7 +67,7 @@ requestRouter.post('/review/:status/:userId', authenticate, async(req, res)=>{
             throw new Error("Receiver user does not exist");
         }
         const existingStatus = await Status.findOne({
-            sender: userId,
+            _id: userId,
             reciever: user._id,
             status: 'interested',
         })

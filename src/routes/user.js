@@ -12,7 +12,7 @@ userRouter.get('/requests',authenticate,  async (req, res)=>{
         const data = await Status.find({
             reciever: user._id, 
             status: 'interested'
-        })
+        }).populate('sender', 'firstName lastName');
 
         res.send(data)
     }catch(e){

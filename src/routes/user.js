@@ -19,7 +19,26 @@ userRouter.get('/requests',authenticate,  async (req, res)=>{
         res.status(400).json({message: e.message})
     }
 })
-
+userRouter.get('/connections', authenticate, async (req, res)=>{
+    try{
+        const user = await User.findById(req.user.userId);
+        const connectionRequests = await Status.find({
+            reciever: user._id,
+            status: 'accepted'
+        }).populate("reciever", 'firstName lastName').populate("sender", 'firstName lastName')
+        const data = connectionRequests.map(x => {
+            if(x.sender._id === user._id){
+                return x.reciever
+            }else{
+                return x.sender
+            }
+        })
+        res.json({data})
+    
+    }catch(e){
+        res.status(400).json({message: e.message})
+    }
+})
 
 
 module.exports = userRouter

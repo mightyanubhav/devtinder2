@@ -19,26 +19,36 @@ userRouter.get('/requests',authenticate,  async (req, res)=>{
         res.status(400).json({message: e.message})
     }
 })
-userRouter.get('/connections', authenticate, async (req, res)=>{
-    try{
-        const user = await User.findById(req.user.userId);
+userRouter.get('/connections', authenticate, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
         const connectionRequests = await Status.find({
-            reciever: user._id,
+            $or: [
+                { sender: userId },
+                { reciever: userId }
+            ],
             status: 'accepted'
-        }).populate("reciever", 'firstName lastName').populate("sender", 'firstName lastName')
+        }).populate("reciever", 'firstName lastName')
+          .populate("sender", 'firstName lastName');
+
         const data = connectionRequests.map(x => {
-            if(x.sender._id === user._id){
-                return x.reciever
-            }else{
-                return x.sender
+            // Return the *other* user
+            if (x.sender._id.toString() === userId.toString()) {
+                return x.reciever;
+            } else {
+                return x.sender;
             }
-        })
-        res.json({data})
-    
-    }catch(e){
-        res.status(400).json({message: e.message})
+        });
+
+        res.json({ connections: data });
+
+    } catch (e) {
+        res.status(400).json({ message: e.message });
     }
-})
+});
+
+
 
 
 module.exports = userRouter

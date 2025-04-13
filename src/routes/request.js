@@ -61,11 +61,6 @@ requestRouter.post('/review/:status/:userId', authenticate, async(req, res)=>{
             throw new Error("Invalid user ID format please update");
         }
 
-        // ✅ Check if the target user exists
-        const receiverUser = await User.findById(userId);
-        if (!receiverUser) {
-            throw new Error("Receiver user does not exist");
-        }
         const existingStatus = await Status.findOne({
             _id: userId,
             reciever: user._id,

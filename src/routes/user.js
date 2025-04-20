@@ -48,6 +48,47 @@ userRouter.get('/connections', authenticate, async (req, res) => {
     }
 });
 
+userRouter.get('/feed', authenticate, async (req, res) => {
+    try {
+        const loggedInUserId = req.user.userId;
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        // Fetch connections & sent/received requests
+        const connectionRequests = await Status.find({
+            $or: [
+                { sender: loggedInUserId },
+                { reciever: loggedInUserId }
+            ],
+            status: { $in: ['accepted', 'interested'] }
+        });
+
+        // Create a Set of user IDs to hide from feed
+        const hideUsersFromFeed = new Set();
+        connectionRequests.forEach(req => {
+            hideUsersFromFeed.add(req.sender.toString());
+            hideUsersFromFeed.add(req.reciever.toString());
+        });
+        hideUsersFromFeed.add(loggedInUserId); // Exclude self
+
+        // Query users not in hideUsersFromFeed
+        const users = await User.find({
+            _id: {
+                $nin: Array.from(hideUsersFromFeed)
+            }
+        })
+        .select('firstName lastName email') // Customize as needed
+        .skip(skip)
+        .limit(limit);
+
+        res.json({ users });
+
+    } catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+});
 
 
 

@@ -79,7 +79,7 @@ userRouter.get('/feed', authenticate, async (req, res) => {
                 $nin: Array.from(hideUsersFromFeed)
             }
         })
-        .select('firstName lastName email') // Customize as needed
+        .select('firstName lastName email age gender profileImage')// Customize as needed
         .skip(skip)
         .limit(limit);
 

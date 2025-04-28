@@ -30,7 +30,7 @@ userRouter.get('/connections', authenticate, async (req, res) => {
             ],
             status: 'accepted'
         }).populate("reciever", 'firstName lastName')
-          .populate("sender", 'firstName lastName');
+          .populate('sender', 'firstName lastName profileImage emailId');
 
         const data = connectionRequests.map(x => {
             // Return the *other* user

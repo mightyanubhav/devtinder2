@@ -14,9 +14,10 @@ const PORT = 7777
 
 // ✅ CORS: Must be before routes
 app.use(cors({
-  origin: 'http://localhost:5173', // only allow this origin
-  credentials: true                // required for cookies
+  origin: ['http://localhost:5173', 'https://devtinder-web-virid.vercel.app'],
+  credentials: true
 }))
+
 
 // ✅ Parsing
 app.use(cookieParser())

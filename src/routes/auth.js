@@ -46,8 +46,11 @@ router.post('/login', async (req, res) => {
 
         res.status(200).cookie("token", token, {
             httpOnly: true,
+            secure: true,            // required for cross-site cookies (on HTTPS like Render)
+            sameSite: "None",        // allow cookies to be sent cross-origin (from Vercel)
             maxAge: 24 * 60 * 60 * 1000
-        }).json({ message: "Login successful", user });
+          }).json({ message: "Login successful", user });
+          
 
     } catch (e) {
         res.status(400).send(e.message);

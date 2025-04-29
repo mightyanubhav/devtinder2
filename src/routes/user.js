@@ -63,7 +63,7 @@ userRouter.get('/feed', authenticate, async (req, res) => {
                 { sender: loggedInUserId },
                 { reciever: loggedInUserId }
             ],
-            status: { $in: ['accepted', 'interested'] }
+            status: { $in: ['accepted', 'interested', 'ignored', 'rejected'] }
         });
 
         // Create a Set of user IDs to hide from feed
